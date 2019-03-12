@@ -16,7 +16,25 @@ extension AnyAttribute: Renderable {
     }
 }
 
-extension Array: Renderable where Element == AnyAttribute {
+extension AnyGraphAttribute: Renderable {
+    func render() -> String {
+        return "\(name) = \"\(valueString)\";"
+    }
+}
+
+extension AnyNodeAttribute: Renderable {
+    func render() -> String {
+        return "\(name) = \"\(valueString)\""
+    }
+}
+
+extension AnyEdgeAttribute: Renderable {
+    func render() -> String {
+        return "\(name) = \"\(valueString)\""
+    }
+}
+
+extension Array: Renderable where Element: Renderable {
     func render() -> String {
         return map { $0.render() }.joined(separator: ", ")
     }
@@ -30,6 +48,12 @@ struct AttributedLine: Renderable {
     public init() {
         content = ""
         attributes = []
+    }
+
+    // Initialize an AttributedLine: Renderable {
+    public init(_ content: Renderable) {
+        self.content = content
+        self.attributes = []
     }
 
     public init(content: Renderable, attributes: [AnyAttribute]) {
@@ -71,19 +95,20 @@ struct LinesBlock: Renderable {
     }
 }
 
+public enum GraphType: String {
+    case graph
+    case digraph
+}
+
 public struct DotFile: Renderable {
-    enum GraphType: String {
-        case graph
-        case digraph
-    }
     let type: GraphType
     let graphAttributes: LinesBlock
-    let vertices: LinesBlock
+    let nodes: LinesBlock
     let edges: LinesBlock
 
     func render() -> String {
 
-        var innerLines = [graphAttributes, vertices, edges]
+        let innerLines = [graphAttributes, nodes, edges]
             .map { $0.indented(by: 4) }
             .map { $0.render() }
             .filter { $0.trimmingCharacters(in: .whitespaces).count > 0 }
@@ -94,5 +119,30 @@ public struct DotFile: Renderable {
         \(innerLines)
         }
         """
+    }
+}
+
+extension DotFile {
+    func lineFor(node: Node) -> AttributedLine {
+        return AttributedLine(
+            content: String(format: "%i", node.id),
+            attributes: [AnyAttribute(Attributes.label(node.label))]
+        )
+    }
+
+    func lineFor(edge: Edge) -> AttributedLine {
+        let arrow: String
+
+        switch type {
+        case .graph:
+            arrow = "--"
+        case .digraph:
+            arrow = "->"
+        }
+
+        return AttributedLine(
+            content: "\(edge.u.id) \(arrow) \(edge.v.id)",
+            attributes: []
+        )
     }
 }
