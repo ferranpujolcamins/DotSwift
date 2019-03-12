@@ -1,0 +1,5 @@
+{% for attr in types.all where attr.name == "Attributes" %}
+{% for type in attr.containedTypes%}
+
+{% endfor %}
+{% endfor %}

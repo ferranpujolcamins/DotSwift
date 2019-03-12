@@ -78,20 +78,20 @@ class SwiftGraphvizEncoderTests: XCTestCase {
         let file = GraphvizEncoder(
             type: .digraph,
             graphAttributes: [
-                AnyGraphAttribute(Attributes.bgcolor(value: ColorList([Color.name("blue")]))),
-                AnyGraphAttribute(Attributes.fontname(value: "Arial")),
+                GraphAttributes.bgcolor(value: ColorList([Color.name("blue")])),
+                GraphAttributes.fontname(value: "Arial"),
             ],
-            nodeAttributes: { (node) -> [AnyNodeAttribute] in
+            nodeAttributes: { node in
                 if node.id != 2 {
                     return []
                 }
                 return [
-                    AnyNodeAttribute(Attributes.color(value: ColorList([Color.name("red")])))
+                    NodeAttributes.color(value: ColorList([Color.name("red")]))
                 ]
             },
-            edgeAttributes: { (edge) -> [AnyEdgeAttribute] in
+            edgeAttributes: { edge in
                 return [
-                    AnyEdgeAttribute(Attributes.color(value: ColorList([Color.name("red")])))
+                    EdgeAttributes.color(value: ColorList([Color.name("red")]))
                 ]
             })
             .encode(graph)

@@ -1,3 +1,13 @@
+// Workaround for lack of support for protocol composition in sourcery
+protocol GNEAttribute: GraphAttribute & NodeAttribute & EdgeAttribute {}
+protocol GNAttribute: GraphAttribute & NodeAttribute {}
+protocol GEAttribute: GraphAttribute & EdgeAttribute {}
+protocol NEAttribute: NodeAttribute & EdgeAttribute {}
+
+public enum GraphAttributes {}
+public enum NodeAttributes {}
+public enum EdgeAttributes {}
+
 public enum Attributes {
     /// Factor damping force motions. On each iteration, a nodes movement is limited to this factor of its potential motion. By being less than 1.0, the system tends to ``cool'', thereby preventing cycling.
     public struct Damping: GraphAttribute {
@@ -16,7 +26,7 @@ public enum Attributes {
     /// For svg, cmapx and imap output, the active area for a node is its visible image. For example, an unfilled node with no drawn boundary will only be active on its label. For other output, the active area is its bounding box. The active area for a cluster is its bounding box. For edges, the active areas are small circles where the edge contacts its head and tail nodes. In addition, for svg, cmapx and imap, the active area includes a thin polygon approximating the edge. The circles may overlap the related node, and the edge URL dominates. If the edge has a label, this will also be active. Finally, if the edge has a head or tail label, this will also be active.
     ///
     /// Note that, for edges, the attributes headURL, tailURL, labelURL and edgeURL allow control of various parts of an edge. Also note that, if active areas of two edges overlap, it is unspecified which area dominates.
-    public struct URL: GraphAttribute & NodeAttribute & EdgeAttribute {
+    public struct URL: GNEAttribute {
         public let value: EscString
     }
 
@@ -97,17 +107,17 @@ public enum Attributes {
     /// Basic drawing color for graphics, not text. For the latter, use the fontcolor attribute.
     ///
     /// For edges, the value can either be a single color or a colorList. In the latter case, if colorList has no fractions, the edge is drawn using parallel splines or lines, one for each color in the list, in the order given. The head arrow, if any, is drawn using the first color in the list, and the tail arrow, if any, the second color. This supports the common case of drawing opposing edges, but using parallel splines instead of separately routed multiedges. If any fraction is used, the colors are drawn in series, with each color being given roughly its specified fraction of the edge.
-    public struct color: EdgeAttribute & NodeAttribute {
+    public struct color: NEAttribute {
         public let value: ColorList
     }
 
     /// This attribute specifies a color scheme namespace. If defined, it specifies the context for interpreting color names. In particular, if a color value has form "xxx" or "//xxx", then the color xxx will be evaluated according to the current color scheme. If no color scheme is set, the standard X11 naming is used. For example, if colorscheme=bugn9, then color=7 is interpreted as "/bugn9/7".
-    public struct colorscheme: EdgeAttribute & NodeAttribute & GraphAttribute {
+    public struct colorscheme: GNEAttribute {
         public let value: String
     }
 
     /// Comments are inserted into output. Device-dependent.
-    public struct comment: EdgeAttribute & NodeAttribute & GraphAttribute {
+    public struct comment: GNEAttribute {
         public let value: String
     }
 
@@ -219,7 +229,7 @@ public enum Attributes {
     /// If the value is a colorList, a gradient fill is used. By default, this is a linear fill; setting style=radial will cause a radial fill. At present, only two colors are used. If the second color (after a colon) is missing, the default color is used for it. See also the gradientangle attribute for setting the gradient angle.
     ///
     /// Note that a cluster inherits the root graph's attributes if defined. Thus, if the root graph has defined a fillcolor, this will override a color or bgcolor attribute set for the cluster.
-    public struct fillcolor: EdgeAttribute & NodeAttribute {
+    public struct fillcolor: NEAttribute {
         public let value: ColorList
     }
 
@@ -252,7 +262,7 @@ public enum Attributes {
     }
 
     /// Color used for text.
-    public struct fontcolor: EdgeAttribute & NodeAttribute & GraphAttribute {
+    public struct fontcolor: GNEAttribute {
         public let value: Color
     }
 
@@ -263,7 +273,7 @@ public enum Attributes {
     /// Note that various font attributes, such as weight and slant, can be built into the font name. Unfortunately, the syntax varies depending on which font system is dominant. Thus, using fontname="times bold italic" will produce a bold, slanted Times font using Pango, the usual main font library. Alternatively, fontname="times:italic" will produce a slanted Times font from fontconfig, while fontname="times-bold" will resolve to a bold Times using Quartz. You will need to ascertain which package is used by your Graphviz system and refer to the relevant documentation.
     ///
     /// If Graphviz is not built with a high-level font library, fontname will be considered the name of a Type 1 or True Type font file. If you specify fontname=schlbk, the tool will look for a file named schlbk.ttf or schlbk.pfa or schlbk.pfb in one of the directories specified by the fontpath attribute. The lookup does support various aliases for the common fonts.
-    public struct fontname: EdgeAttribute & NodeAttribute & GraphAttribute {
+    public struct fontname: GNEAttribute {
         public let value: String
     }
 
@@ -288,7 +298,7 @@ public enum Attributes {
     }
 
     /// Font size, in points, used for text.
-    public struct fontsize: EdgeAttribute & NodeAttribute & GraphAttribute {
+    public struct fontsize: GNEAttribute {
         public let value: Double
     }
 
@@ -300,7 +310,7 @@ public enum Attributes {
     /// If a gradient fill is being used, this determines the angle of the fill. For linear fills, the colors transform along a line specified by the angle and the center of the object. For radial fills, a value of zero causes the colors to transform radially from the center; for non-zero values, the colors transform from a point near the object's periphery as specified by the value.
     ///
     /// If unset, the default angle is 0.
-    public struct gradientangle: NodeAttribute & GraphAttribute {
+    public struct gradientangle: GNAttribute {
         public let value: Int
     }
 
@@ -360,7 +370,7 @@ public enum Attributes {
     /// Allows the graph author to provide an id for graph objects which is to be included in the output. Normal "\N", "\E", "\G" substitutions are applied. If provided, it is the responsibility of the provider to keep its values sufficiently unique for its intended downstream use. Note, in particular, that "\E" does not provide a unique id for multi-edges. If no id attribute is provided, then a unique internal id is used. However, this value is unpredictable by the graph writer. An externally provided id is not used internally.
     ///
     /// If the graph provides an id attribute, this will be used as a prefix for internally generated attributes. By making these distinct, the user can include multiple image maps in the same document.
-    public struct id: GraphAttribute & NodeAttribute & EdgeAttribute {
+    public struct id: GNEAttribute {
         public let value: EscString
     }
 
@@ -444,7 +454,7 @@ public enum Attributes {
     /// Text label attached to objects. If a node's shape is record, then the label can have a special format which describes the record layout.
     ///
     /// Note that a node's default label is "\N", so the node's name or ID becomes its label. Technically, a node's name can be an HTML string but this will not mean that the node's label will be interpreted as an HTML-like label. This is because the node's actual label is an ordinary string, which will be replaced by the raw bytes stored in the node's name. To get an HTML-like label, the label attribute value itself must be an HTML string.
-    public struct label: EdgeAttribute & NodeAttribute & GraphAttribute {
+    public struct label: GNEAttribute {
         public let value: LblString
 
         public init(_ value: String) {
@@ -498,7 +508,7 @@ public enum Attributes {
         public let value: String
     }
 
-    public struct labelloc: GraphAttribute & NodeAttribute {
+    public struct labelloc: GNAttribute {
         public let value: String
     }
 
@@ -514,7 +524,7 @@ public enum Attributes {
         public let value: Bool
     }
 
-    public struct layer: EdgeAttribute & NodeAttribute {
+    public struct layer: NEAttribute {
         public let value: LayerRange
     }
 
@@ -558,7 +568,7 @@ public enum Attributes {
         public let value: Double
     }
 
-    public struct lp: EdgeAttribute & GraphAttribute {
+    public struct lp: GEAttribute {
         public let value: Point
     }
 
@@ -570,7 +580,7 @@ public enum Attributes {
         public let value: Double
     }
 
-    public struct margin: NodeAttribute & GraphAttribute {
+    public struct margin: GNAttribute {
         public let value: Point
     }
 
@@ -610,7 +620,7 @@ public enum Attributes {
         public let value: Double
     }
 
-    public struct nojustify: GraphAttribute & NodeAttribute & EdgeAttribute {
+    public struct nojustify: GNEAttribute {
         public let value: Bool
     }
 
@@ -659,7 +669,7 @@ public enum Attributes {
         public let value: Double
     }
 
-    public struct ordering: NodeAttribute & GraphAttribute {
+    public struct ordering: GNAttribute {
         public let value: String
     }
 
@@ -788,7 +798,7 @@ public enum Attributes {
         public let value: PageDir
     }
 
-    public struct penwidth: NodeAttribute & EdgeAttribute {
+    public struct penwidth: NEAttribute {
         public let value: Double
     }
 
@@ -800,7 +810,7 @@ public enum Attributes {
         public let value: Bool
     }
 
-    public struct pos: EdgeAttribute & NodeAttribute {
+    public struct pos: NEAttribute {
         public let value: Point
     }
 
@@ -871,7 +881,7 @@ public enum Attributes {
         public let value: Double
     }
 
-    public struct root: NodeAttribute & GraphAttribute {
+    public struct root: GNAttribute {
         public let value: Bool
     }
 
@@ -915,7 +925,7 @@ public enum Attributes {
         public let value: String
     }
 
-    public struct showboxes: EdgeAttribute & NodeAttribute & GraphAttribute {
+    public struct showboxes: GNEAttribute {
         public let value: Int
     }
 
@@ -935,7 +945,7 @@ public enum Attributes {
         public let value: SmoothType
     }
 
-    public struct sortv: NodeAttribute & GraphAttribute {
+    public struct sortv: GNAttribute {
         public let value: Int
     }
 
@@ -947,7 +957,7 @@ public enum Attributes {
         public let value: StartType
     }
 
-    public struct style: EdgeAttribute & NodeAttribute & GraphAttribute {
+    public struct style: GNEAttribute {
         public let value: Style
     }
 
@@ -987,11 +997,11 @@ public enum Attributes {
         public let value: EscString
     }
 
-    public struct target: EdgeAttribute & NodeAttribute & GraphAttribute {
+    public struct target: GNEAttribute {
         public let value: String
     }
 
-    public struct tooltip: EdgeAttribute & NodeAttribute {
+    public struct tooltip: NEAttribute {
         public let value: EscString
     }
 
@@ -1023,11 +1033,11 @@ public enum Attributes {
         public let value: String
     }
 
-    public struct xlabel: EdgeAttribute & NodeAttribute {
+    public struct xlabel: NEAttribute {
         public let value: LblString
     }
 
-    public struct xlp: EdgeAttribute & NodeAttribute {
+    public struct xlp: NEAttribute {
         public let value: Point
     }
 

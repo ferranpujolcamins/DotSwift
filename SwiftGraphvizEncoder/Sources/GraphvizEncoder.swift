@@ -18,9 +18,9 @@ public struct Graph {
 }
 
 public struct GraphvizEncoder {
-    public typealias GraphAttributes = [AnyGraphAttribute]
-    public typealias NodeAttributes = (Node) -> [AnyNodeAttribute]
-    public typealias EdgeAttributes = (Edge) -> [AnyEdgeAttribute]
+    public typealias GraphAttributes = [GraphAttributeProtocol]
+    public typealias NodeAttributes = (Node) -> [NodeAttributeProtocol]
+    public typealias EdgeAttributes = (Edge) -> [EdgeAttributeProtocol]
 
     let type: GraphType
     let graphAttributes: GraphAttributes
@@ -41,7 +41,7 @@ public struct GraphvizEncoder {
     func encode(_ graph: Graph) -> String {
         return DotFile(
             type: type,
-            graphAttributes: LinesBlock(graphAttributes),
+            graphAttributes: LinesBlock(graphAttributes.map { AnyGraphAttribute($0) }),
             nodes: LinesBlock(lines(for: graph.nodes)),
             edges: LinesBlock(lines(for: graph.edges))
         ).render()

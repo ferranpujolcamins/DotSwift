@@ -1,4 +1,4 @@
-// swift-tools-version:4.0
+// swift-tools-version:4.2
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -8,26 +8,36 @@ let package = Package(
     products: [
         .library(
             name: "SwiftGraphvizAttributes",
-            targets: ["SwiftGraphvizAttributes"]),
+            targets: ["SwiftGraphvizAttributes"]
+        ),
         .library(
             name: "SwiftGraphvizEncoder",
-            targets: ["SwiftGraphvizEncoder"]),
+            targets: ["SwiftGraphvizEncoder"]
+        ),
     ],
     dependencies: [
     ],
     targets: [
         .target(
             name: "SwiftGraphvizAttributes",
-            dependencies: []),
+            dependencies: [],
+            path: "SwiftGraphvizAttributes/Sources"
+        ),
         .testTarget(
             name: "SwiftGraphvizAttributesTests",
-            dependencies: ["SwiftGraphvizAttributes"]),
+            dependencies: ["SwiftGraphvizAttributes"],
+            path: "SwiftGraphvizAttributes/Tests"
+        ),
 
         .target(
             name: "SwiftGraphvizEncoder",
-            dependencies: ["SwiftGraphvizAttributes"]),
+            dependencies: ["SwiftGraphvizAttributes"],
+            path: "SwiftGraphvizEncoder/Sources"
+        ),
         .testTarget(
             name: "SwiftGraphvizEncoderTests",
-            dependencies: ["SwiftGraphvizEncoder"]),
+            dependencies: ["SwiftGraphvizEncoder"],
+            path: "SwiftGraphvizEncoder/Tests"
+        ),
     ]
 )
