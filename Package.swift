@@ -7,15 +7,28 @@ let package = Package(
     name: "SwiftGraphviz",
     products: [
         .library(
-            name: "SwiftGraphviz",
-            targets: ["SwiftGraphviz"]),
+            name: "SwiftGraphvizAttributes",
+            targets: ["SwiftGraphvizAttributes"]),
+        .library(
+            name: "SwiftGraphvizEncoder",
+            targets: ["SwiftGraphvizEncoder"]),
+    ],
+    dependencies: [
+        .package(url: "https://github.com/davecom/SwiftGraph", .branch("release2.1/swift5"))
     ],
     targets: [
         .target(
-            name: "SwiftGraphviz",
+            name: "SwiftGraphvizAttributes",
             dependencies: []),
         .testTarget(
-            name: "SwiftGraphvizTests",
-            dependencies: ["SwiftGraphviz"]),
+            name: "SwiftGraphvizAttributesTests",
+            dependencies: ["SwiftGraphvizAttributes"]),
+
+        .target(
+            name: "SwiftGraphvizEncoder",
+            dependencies: ["SwiftGraphvizAttributes", "SwiftGraph"]),
+        .testTarget(
+            name: "SwiftGraphvizEncoderTests",
+            dependencies: ["SwiftGraphvizEncoder"]),
     ]
 )
