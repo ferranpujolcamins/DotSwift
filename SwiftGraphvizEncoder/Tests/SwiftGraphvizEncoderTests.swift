@@ -48,7 +48,7 @@ class SwiftGraphvizEncoderTests: XCTestCase {
         let nodeC = Node(id: 2, label: "C")
 
         let graphAttributes = [AnyGraphAttribute(
-            Attributes.bgcolor(value: ColorList([Color.name("blue")]))
+            Attributes.bgcolor(ColorList([Color.name("blue")]))
         )]
 
         let graph = Graph(nodes: [nodeA, nodeB, nodeC], edges: [Edge(u: nodeA, v: nodeB, label: "e")])
@@ -78,27 +78,27 @@ class SwiftGraphvizEncoderTests: XCTestCase {
         let file = GraphvizEncoder(
             type: .digraph,
             graphAttributes: [
-                GraphAttributes.bgcolor(value: ColorList([Color.name("blue")])),
-                GraphAttributes.fontname(value: "Arial"),
+                GraphAttributes.bgcolor([Color.name("blue"), Color.name("white")]),
+                GraphAttributes.fontname("Arial"),
             ],
             nodeAttributes: { node in
                 if node.id != 2 {
                     return []
                 }
                 return [
-                    NodeAttributes.color(value: ColorList([Color.name("red")]))
+                    NodeAttributes.color(Color.name("red"))
                 ]
             },
             edgeAttributes: { edge in
                 return [
-                    EdgeAttributes.color(value: ColorList([Color.name("red")]))
+                    EdgeAttributes.color(Color.name("red"))
                 ]
             })
             .encode(graph)
 
         XCTAssertEqual(file, """
         digraph {
-            bgcolor = "blue";
+            bgcolor = "blue:white";
             fontname = "Arial";
 
             0 [label = "A"];

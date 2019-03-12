@@ -456,10 +456,6 @@ public enum Attributes {
     /// Note that a node's default label is "\N", so the node's name or ID becomes its label. Technically, a node's name can be an HTML string but this will not mean that the node's label will be interpreted as an HTML-like label. This is because the node's actual label is an ordinary string, which will be replaced by the raw bytes stored in the node's name. To get an HTML-like label, the label attribute value itself must be an HTML string.
     public struct label: GNEAttribute {
         public let value: LblString
-
-        public init(_ value: String) {
-            self.value = value
-        }
     }
 
     /// If labelURL is defined, this is the link used for the label of an edge. This value overrides any URL defined for the edge.

@@ -28,6 +28,18 @@ public struct List<T: CustomStringConvertible>: CustomStringConvertible {
     }
 }
 
+public struct ColorList: CustomStringConvertible {
+    let elements: [Color]
+
+    init(_ elements: [Color]) {
+        self.elements = elements
+    }
+
+    public var description: String {
+        return elements.map { $0.description }.joined(separator: ":")
+    }
+}
+
 public struct Rect: CustomStringConvertible {
     public let lowerLeft: Point
     public let upperRight: Point
@@ -255,7 +267,6 @@ public struct StartType: CustomStringConvertible {
 
 public typealias Style = String
 public typealias PointList = List<Point>
-public typealias ColorList = List<Color>
 public typealias AddPoint = Add<Point>
 
 public enum ViewPort: CustomStringConvertible {

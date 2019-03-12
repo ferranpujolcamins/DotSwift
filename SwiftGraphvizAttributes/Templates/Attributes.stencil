@@ -1,5 +1,19 @@
-{% for attr in types.all where attr.name == "Attributes" %}
-{% for type in attr.containedTypes%}
+{% for attr in type.Attributes.containedTypes %}
+public extension {{attr.name}} {
+    init(_ value: T) {
+        self.init(value: value)
+    }
+{% for var in attr.variables where var.typeName.name == "ColorList" %}
 
+    init(_ colors: [Color]) {
+        self.init(value: ColorList(colors))
+    }
+
+    init(_ color: Color) {
+        self.init(value: ColorList([color]))
+    }
 {% endfor %}
+
+}
+
 {% endfor %}
