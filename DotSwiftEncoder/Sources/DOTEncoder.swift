@@ -1,20 +1,37 @@
 import DotSwiftAttributes
 
 public struct Node {
-    let id: Int
-    let label: String
+    public let id: Int
+    public let label: String
+
+    public init(id: Int, label: String) {
+        self.id = id
+        self.label = label
+    }
 }
 
 public struct Edge {
-    let u: Node
-    let v: Node
+    public let u: Node
+    public let v: Node
 
-    let label: String
+    public let label: String?
+
+    public init(u: Node, v: Node, label: String?) {
+        self.u = u
+        self.v = v
+
+        self.label = label
+    }
 }
 
 public struct Graph {
-    var nodes: [Node]
-    var edges: [Edge]
+    public var nodes: [Node]
+    public var edges: [Edge]
+
+    public init(nodes: [Node], edges: [Edge]) {
+        self.nodes = nodes
+        self.edges = edges
+    }
 }
 
 public struct DOTEncoder {
@@ -22,12 +39,12 @@ public struct DOTEncoder {
     public typealias NodeAttributes = (Node) -> [NodeAttributeProtocol]
     public typealias EdgeAttributes = (Edge) -> [EdgeAttributeProtocol]
 
-    let type: GraphType
-    let graphAttributes: GraphAttributes
-    let nodeAttributes: NodeAttributes?
-    let edgeAttributes: EdgeAttributes?
+    private let type: GraphType
+    private let graphAttributes: GraphAttributes
+    private let nodeAttributes: NodeAttributes?
+    private let edgeAttributes: EdgeAttributes?
 
-    init(type: GraphType,
+    public init(type: GraphType,
          graphAttributes: GraphAttributes = [],
          nodeAttributes: NodeAttributes? = nil,
          edgeAttributes: EdgeAttributes? = nil) {
@@ -38,7 +55,7 @@ public struct DOTEncoder {
         self.edgeAttributes = edgeAttributes
     }
 
-    func encode(_ graph: Graph) -> String {
+    public func encode(_ graph: Graph) -> String {
         return DotFile(
             type: type,
             graphAttributes: LinesBlock(graphAttributes.map { AnyGraphAttribute($0) }),
@@ -48,7 +65,6 @@ public struct DOTEncoder {
     }
 
     private func lines(for nodes: [Node]) -> [AttributedLine] {
-
         return nodes.map { node in
             let (content, attributes) = render(node)
             return AttributedLine(content: content, attributes: (attributes + (nodeAttributes?(node) ?? [])).map { AnyAttribute($0)} )
@@ -57,8 +73,8 @@ public struct DOTEncoder {
 
     private func lines(for edges: [Edge]) -> [AttributedLine] {
         return edges.map { edge in
-            let content = render(edge)
-            return AttributedLine(content: content, attributes: (edgeAttributes?(edge) ?? []).map { AnyAttribute($0)} )
+            let (content, attributes) = render(edge)
+            return AttributedLine(content: content, attributes: (attributes + (edgeAttributes?(edge) ?? [])).map { AnyAttribute($0)} )
         }
     }
 
@@ -69,12 +85,26 @@ public struct DOTEncoder {
         )
     }
 
-    private func render(_ edge: Edge) -> String {
+    private func render(_ edge: Edge) -> (content: String, attributes: [AnyEdgeAttribute]) {
+        let content: String
+
         switch type {
         case .graph:
-            return "\(edge.u.id) -- \(edge.v.id)"
+            content = "\(edge.u.id) -- \(edge.v.id)"
         case .digraph:
-            return "\(edge.u.id) -> \(edge.v.id)"
+            content = "\(edge.u.id) -> \(edge.v.id)"
         }
+
+        let attributes: [AnyEdgeAttribute]
+        if let label = edge.label {
+            attributes = [AnyEdgeAttribute(Attributes.label(label))]
+        } else {
+            attributes = []
+        }
+
+        return (
+            content: content,
+            attributes: attributes
+        )
     }
 }

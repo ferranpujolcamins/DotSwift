@@ -14,8 +14,13 @@ let package = Package(
             name: "DotSwiftEncoder",
             targets: ["DotSwiftEncoder"]
         ),
+        .library(
+            name: "SwiftGraphBindings",
+            targets: ["SwiftGraphBindings"]
+        ),
     ],
     dependencies: [
+        .package(url: "https://github.com/davecom/SwiftGraph", .branch("release2.1/swift5")),
     ],
     targets: [
         .target(
@@ -38,6 +43,17 @@ let package = Package(
             name: "DotSwiftEncoderTests",
             dependencies: ["DotSwiftEncoder"],
             path: "DotSwiftEncoder/Tests"
+        ),
+
+        .target(
+            name: "SwiftGraphBindings",
+            dependencies: ["DotSwiftEncoder", "SwiftGraph"],
+            path: "SwiftGraphBindings/Sources"
+        ),
+        .testTarget(
+            name: "SwiftGraphBindingsTests",
+            dependencies: ["SwiftGraphBindings"],
+            path: "SwiftGraphBindings/Tests"
         ),
     ]
 )
