@@ -1,3 +1,3 @@
 # SwiftGraphviz
 
-A description of this package.
+A Swift library to encode graphs to Graphviz DOT graph description language.
