@@ -4,40 +4,40 @@
 import PackageDescription
 
 let package = Package(
-    name: "SwiftGraphviz",
+    name: "DotSwift",
     products: [
         .library(
-            name: "SwiftGraphvizAttributes",
-            targets: ["SwiftGraphvizAttributes"]
+            name: "DotSwiftAttributes",
+            targets: ["DotSwiftAttributes"]
         ),
         .library(
-            name: "SwiftGraphvizEncoder",
-            targets: ["SwiftGraphvizEncoder"]
+            name: "DotSwiftEncoder",
+            targets: ["DotSwiftEncoder"]
         ),
     ],
     dependencies: [
     ],
     targets: [
         .target(
-            name: "SwiftGraphvizAttributes",
+            name: "DotSwiftAttributes",
             dependencies: [],
-            path: "SwiftGraphvizAttributes/Sources"
+            path: "DotSwiftAttributes/Sources"
         ),
         .testTarget(
-            name: "SwiftGraphvizAttributesTests",
-            dependencies: ["SwiftGraphvizAttributes"],
-            path: "SwiftGraphvizAttributes/Tests"
+            name: "DotSwiftAttributesTests",
+            dependencies: ["DotSwiftAttributes"],
+            path: "DotSwiftAttributes/Tests"
         ),
 
         .target(
-            name: "SwiftGraphvizEncoder",
-            dependencies: ["SwiftGraphvizAttributes"],
-            path: "SwiftGraphvizEncoder/Sources"
+            name: "DotSwiftEncoder",
+            dependencies: ["DotSwiftAttributes"],
+            path: "DotSwiftEncoder/Sources"
         ),
         .testTarget(
-            name: "SwiftGraphvizEncoderTests",
-            dependencies: ["SwiftGraphvizEncoder"],
-            path: "SwiftGraphvizEncoder/Tests"
+            name: "DotSwiftEncoderTests",
+            dependencies: ["DotSwiftEncoder"],
+            path: "DotSwiftEncoder/Tests"
         ),
     ]
 )

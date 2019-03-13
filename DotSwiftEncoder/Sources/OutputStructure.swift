@@ -1,4 +1,4 @@
-import SwiftGraphvizAttributes
+import DotSwiftAttributes
 
 protocol Renderable {
     func render() -> String

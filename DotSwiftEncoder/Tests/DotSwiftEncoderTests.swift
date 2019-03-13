@@ -1,8 +1,8 @@
 import XCTest
-@testable import SwiftGraphvizAttributes
-@testable import SwiftGraphvizEncoder
+@testable import DotSwiftAttributes
+@testable import DotSwiftEncoder
 
-class SwiftGraphvizEncoderTests: XCTestCase {
+class DOTEncoderTests: XCTestCase {
 
     func testExample() {
         let nodeA = Node(id: 0, label: "A")
@@ -11,7 +11,7 @@ class SwiftGraphvizEncoderTests: XCTestCase {
 
         let graph = Graph(nodes: [nodeA, nodeB, nodeC], edges: [])
 
-        let file = GraphvizEncoder(type: .digraph).encode(graph)
+        let file = DOTEncoder(type: .digraph).encode(graph)
 
         XCTAssertEqual(file, """
         digraph {
@@ -29,7 +29,7 @@ class SwiftGraphvizEncoderTests: XCTestCase {
 
         let graph = Graph(nodes: [nodeA, nodeB, nodeC], edges: [Edge(u: nodeA, v: nodeB, label: "e")])
 
-        let file = GraphvizEncoder(type: .digraph).encode(graph)
+        let file = DOTEncoder(type: .digraph).encode(graph)
 
         XCTAssertEqual(file, """
         digraph {
@@ -53,7 +53,7 @@ class SwiftGraphvizEncoderTests: XCTestCase {
 
         let graph = Graph(nodes: [nodeA, nodeB, nodeC], edges: [Edge(u: nodeA, v: nodeB, label: "e")])
 
-        let file = GraphvizEncoder(type: .graph, graphAttributes: graphAttributes).encode(graph)
+        let file = DOTEncoder(type: .graph, graphAttributes: graphAttributes).encode(graph)
 
         XCTAssertEqual(file, """
         graph {
@@ -75,7 +75,7 @@ class SwiftGraphvizEncoderTests: XCTestCase {
 
         let graph = Graph(nodes: [nodeA, nodeB, nodeC], edges: [Edge(u: nodeA, v: nodeB, label: "e")])
 
-        let file = GraphvizEncoder(
+        let file = DOTEncoder(
             type: .digraph,
             graphAttributes: [
                 GraphAttributes.bgcolor([Color.name("blue"), Color.name("white")]),

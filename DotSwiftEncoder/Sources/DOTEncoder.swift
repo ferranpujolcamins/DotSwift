@@ -1,4 +1,4 @@
-import SwiftGraphvizAttributes
+import DotSwiftAttributes
 
 public struct Node {
     let id: Int
@@ -17,7 +17,7 @@ public struct Graph {
     var edges: [Edge]
 }
 
-public struct GraphvizEncoder {
+public struct DOTEncoder {
     public typealias GraphAttributes = [GraphAttributeProtocol]
     public typealias NodeAttributes = (Node) -> [NodeAttributeProtocol]
     public typealias EdgeAttributes = (Edge) -> [EdgeAttributeProtocol]
