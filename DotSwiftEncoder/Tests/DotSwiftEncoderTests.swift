@@ -27,7 +27,7 @@ class DOTEncoderTests: XCTestCase {
         let nodeB = Node(id: 1, label: "B")
         let nodeC = Node(id: 2, label: "C")
 
-        let graph = Graph(nodes: [nodeA, nodeB, nodeC], edges: [Edge(u: nodeA, v: nodeB, label: "e")])
+        let graph = Graph(nodes: [nodeA, nodeB, nodeC], edges: [Edge(u: nodeA, v: nodeB, directed: true, label: "e")])
 
         let file = DOTEncoder(type: .digraph).encode(graph)
 
@@ -51,7 +51,7 @@ class DOTEncoderTests: XCTestCase {
             Attributes.bgcolor(ColorList([Color.name("blue")]))
         )]
 
-        let graph = Graph(nodes: [nodeA, nodeB, nodeC], edges: [Edge(u: nodeA, v: nodeB, label: "e")])
+        let graph = Graph(nodes: [nodeA, nodeB, nodeC], edges: [Edge(u: nodeA, v: nodeB, directed: true, label: "e")])
 
         let file = DOTEncoder(type: .graph, graphAttributes: graphAttributes).encode(graph)
 
@@ -73,7 +73,7 @@ class DOTEncoderTests: XCTestCase {
         let nodeB = Node(id: 1, label: "B")
         let nodeC = Node(id: 2, label: "C")
 
-        let graph = Graph(nodes: [nodeA, nodeB, nodeC], edges: [Edge(u: nodeA, v: nodeB, label: "e")])
+        let graph = Graph(nodes: [nodeA, nodeB, nodeC], edges: [Edge(u: nodeA, v: nodeB, directed: true, label: "e")])
 
         let file = DOTEncoder(
             type: .digraph,

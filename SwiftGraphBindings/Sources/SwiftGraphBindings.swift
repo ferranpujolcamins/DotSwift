@@ -11,14 +11,13 @@ extension DOTEncoder {
             return Node(id: i, label: v.description)
         }
 
-        let edges = graph.edges.flatMap {
-            $0.map {
-                Edge(
-                    u: Node(id: $0.u, label: graph[$0.u].description),
-                    v: Node(id: $0.v, label: graph[$0.v].description),
-                    label: $0.dotLabel()
-                )
-            }
+        let edges = graph.edgeList().map {
+            Edge(
+                u: Node(id: $0.u, label: graph[$0.u].description),
+                v: Node(id: $0.v, label: graph[$0.v].description),
+                directed: $0.directed,
+                label: $0.dotLabel()
+            )
         }
         return encode(Graph(nodes: nodes, edges: edges))
     }

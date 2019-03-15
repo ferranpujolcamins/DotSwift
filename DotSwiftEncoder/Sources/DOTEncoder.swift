@@ -13,12 +13,14 @@ public struct Node {
 public struct Edge {
     public let u: Node
     public let v: Node
+    public let directed: Bool
 
     public let label: String?
 
-    public init(u: Node, v: Node, label: String?) {
+    public init(u: Node, v: Node, directed: Bool, label: String?) {
         self.u = u
         self.v = v
+        self.directed = directed
 
         self.label = label
     }
@@ -95,11 +97,12 @@ public struct DOTEncoder {
             content = "\(edge.u.id) -> \(edge.v.id)"
         }
 
-        let attributes: [AnyEdgeAttribute]
+        var attributes = [AnyEdgeAttribute]()
         if let label = edge.label {
-            attributes = [AnyEdgeAttribute(Attributes.label(label))]
-        } else {
-            attributes = []
+            attributes.append(AnyEdgeAttribute(Attributes.label(label)))
+        }
+        if !edge.directed {
+            attributes.append(AnyEdgeAttribute(Attributes.dir(.none)))
         }
 
         return (

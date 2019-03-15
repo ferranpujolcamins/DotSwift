@@ -121,28 +121,3 @@ public struct DotFile: Renderable {
         """
     }
 }
-
-extension DotFile {
-    func lineFor(node: Node) -> AttributedLine {
-        return AttributedLine(
-            content: String(format: "%i", node.id),
-            attributes: [AnyAttribute(Attributes.label(node.label))]
-        )
-    }
-
-    func lineFor(edge: Edge) -> AttributedLine {
-        let arrow: String
-
-        switch type {
-        case .graph:
-            arrow = "--"
-        case .digraph:
-            arrow = "->"
-        }
-
-        return AttributedLine(
-            content: "\(edge.u.id) \(arrow) \(edge.v.id)",
-            attributes: []
-        )
-    }
-}
