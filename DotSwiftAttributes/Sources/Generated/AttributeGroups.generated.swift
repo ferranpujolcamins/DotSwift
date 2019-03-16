@@ -1,7 +1,7 @@
 // Generated using Sourcery 0.16.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
-extension GraphAttributes {
+public extension GraphAttributes {
     typealias Damping = Attributes.Damping
     typealias K = Attributes.K
     typealias URL = Attributes.URL
@@ -101,7 +101,7 @@ extension GraphAttributes {
     typealias xdotversion = Attributes.xdotversion
 }
 
-extension NodeAttributes {
+public extension NodeAttributes {
     typealias URL = Attributes.URL
     typealias area = Attributes.area
     typealias color = Attributes.color
@@ -151,7 +151,7 @@ extension NodeAttributes {
     typealias z = Attributes.z
 }
 
-extension EdgeAttributes {
+public extension EdgeAttributes {
     typealias URL = Attributes.URL
     typealias arrowhead = Attributes.arrowhead
     typealias arrowsize = Attributes.arrowsize

@@ -1,4 +1,4 @@
-extension GraphAttributes {
+public extension GraphAttributes {
 {% for attr in type.Attributes.containedTypes
     where attr.implements.GNEAttribute or
           attr.implements.GNAttribute or
@@ -8,7 +8,7 @@ extension GraphAttributes {
 {% endfor %}
 }
 
-extension NodeAttributes {
+public extension NodeAttributes {
 {% for attr in type.Attributes.containedTypes
     where attr.implements.GNEAttribute or
           attr.implements.GNAttribute or
@@ -18,7 +18,7 @@ extension NodeAttributes {
 {% endfor %}
 }
 
-extension EdgeAttributes {
+public extension EdgeAttributes {
 {% for attr in type.Attributes.containedTypes
     where attr.implements.GNEAttribute or
           attr.implements.GEAttribute or

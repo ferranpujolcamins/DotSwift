@@ -37,19 +37,19 @@ public struct Graph {
 }
 
 public struct DOTEncoder {
-    public typealias GraphAttributes = [GraphAttributeProtocol]
-    public typealias NodeAttributes = (Node) -> [NodeAttributeProtocol]
-    public typealias EdgeAttributes = (Edge) -> [EdgeAttributeProtocol]
+    public typealias AttributesForGraph = [GraphAttributeProtocol]
+    public typealias AttributesForNodes = (Node) -> [NodeAttributeProtocol]
+    public typealias AttributesForEdges = (Edge) -> [EdgeAttributeProtocol]
 
     private let type: GraphType
-    private let graphAttributes: GraphAttributes
-    private let nodeAttributes: NodeAttributes?
-    private let edgeAttributes: EdgeAttributes?
+    private let graphAttributes: AttributesForGraph
+    private let nodeAttributes: AttributesForNodes?
+    private let edgeAttributes: AttributesForEdges?
 
     public init(type: GraphType,
-         graphAttributes: GraphAttributes = [],
-         nodeAttributes: NodeAttributes? = nil,
-         edgeAttributes: EdgeAttributes? = nil) {
+         graphAttributes: AttributesForGraph = [],
+         nodeAttributes: AttributesForNodes? = nil,
+         edgeAttributes: AttributesForEdges? = nil) {
 
         self.type = type
         self.graphAttributes = graphAttributes
@@ -83,7 +83,7 @@ public struct DOTEncoder {
     private func render(_ node: Node) -> (content: String, attributes: [AnyNodeAttribute]) {
         return (
             content: String(format: "%i", node.id),
-            attributes: [AnyNodeAttribute(Attributes.label(node.label))]
+            attributes: [AnyNodeAttribute(NodeAttributes.label(node.label))]
         )
     }
 
@@ -99,10 +99,10 @@ public struct DOTEncoder {
 
         var attributes = [AnyEdgeAttribute]()
         if let label = edge.label {
-            attributes.append(AnyEdgeAttribute(Attributes.label(label)))
+            attributes.append(AnyEdgeAttribute(EdgeAttributes.label(label)))
         }
         if !edge.directed {
-            attributes.append(AnyEdgeAttribute(Attributes.dir(.none)))
+            attributes.append(AnyEdgeAttribute(EdgeAttributes.dir(.none)))
         }
 
         return (
