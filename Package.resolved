@@ -5,9 +5,9 @@
         "package": "SwiftGraph",
         "repositoryURL": "https://github.com/davecom/SwiftGraph",
         "state": {
-          "branch": "release2.1/swift5",
-          "revision": "17f2a279a3a591a460206eb12a8e776278fc1d1e",
-          "version": null
+          "branch": null,
+          "revision": "3e9ed26e380b40fcadf80ef5d588829ced251673",
+          "version": "3.0.0"
         }
       }
     ]

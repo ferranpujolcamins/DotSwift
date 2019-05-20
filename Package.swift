@@ -20,7 +20,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/davecom/SwiftGraph", .branch("release2.1/swift5")),
+        .package(url: "https://github.com/davecom/SwiftGraph", .upToNextMajor(from: "3.0.0")),
     ],
     targets: [
         .target(
