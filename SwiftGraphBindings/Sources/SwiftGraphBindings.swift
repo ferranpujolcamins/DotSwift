@@ -1,7 +1,7 @@
 import DotSwiftEncoder
 import SwiftGraph
 
-extension DOTEncoder {
+public extension DOTEncoder {
     func encode<G>(_ graph: G) -> String where G: SwiftGraph.Graph,
         G.V: CustomStringConvertible, G.E: DOTPrintableEdge,
         G.Element == G.V { // Why do we even need this constraints?
@@ -23,11 +23,11 @@ extension DOTEncoder {
     }
 }
 
-protocol DOTPrintableEdge {
+public protocol DOTPrintableEdge {
     func dotLabel() -> String?
 }
 
-extension DOTPrintableEdge {
+public extension DOTPrintableEdge {
     func dotLabel() -> String? {
         return nil
     }
@@ -36,7 +36,7 @@ extension DOTPrintableEdge {
 extension UnweightedEdge: DOTPrintableEdge {}
 
 extension WeightedEdge: DOTPrintableEdge where W: CustomStringConvertible {
-    func dotLabel() -> String? {
+    public func dotLabel() -> String? {
         return weight.description
     }
 }
